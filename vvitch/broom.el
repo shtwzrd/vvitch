@@ -16,3 +16,5 @@
 
 (use-package swiper
   :ensure t)
+
+(provide 'vvitch-broom)

@@ -1,18 +1,3 @@
-(defvar vvitch-mode-line
-  '("%e" mode-line-front-space
-    mode-line-mule-info
-    mode-line-client mode-line-modified
-    mode-line-remote mode-line-frame-identification
-    mode-line-buffer-identification
-    "   "
-    mode-line-position
-    evil-mode-line-tag
-    (vc-mode vc-mode)
-    "  "
-    mode-line-modes
-    mode-line-misc-info
-    mode-line-end-spaces))
-
 (menu-bar-mode -1)
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
@@ -35,13 +20,11 @@
       inhibit-default-init t
       initial-major-mode 'fundamental-mode
       initial-scratch-message nil
-      mode-line-format nil
       echo-keystrokes 0.02)
 
 (setq-default cursor-in-non-selected-windows nil
               display-line-numbers-width 3
               frame-inhibit-implied-resize t
-              mode-line-format nil
               visible-cursor nil
               x-stretch-cursor nil
               image-animate-loop t
@@ -54,6 +37,12 @@
               jit-lock-defer-time nil
               jit-lock-stealth-nice 0.1
               jit-lock-stealth-time 0.2
-              jit-lock-stealth-verbose nil
+              jit-lock-stealth-verbose nil)
 
-              header-line-format 'vvitch-mode-line)
+(use-package nord-theme
+  :ensure t
+  :config
+  (setq nord-comment-brightness 10)
+  (load-theme 'nord t))
+
+(provide 'vvitch-cosmetics)

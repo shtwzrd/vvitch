@@ -3,6 +3,13 @@
 (defvar vvitch-etc-dir (concat user-emacs-directory "etc/"))
 (defvar vvitch-var-dir (concat user-emacs-directory "var/"))
 
+(defvar normal-gc-cons-threshold (* 20 1024 1024))
+(defvar init-gc-cons-threshold   (* 512 1024 1024))
+
+(setq gc-cons-threshold init-gc-cons-threshold)
+(add-hook 'after-init-hook
+  (lambda () (setq gc-cons-threshold normal-gc-cons-threshold)))
+
 (unless (file-exists-p vvitch-pkg-dir)
   (make-directory vvitch-pkg-dir))
 (unless (file-exists-p vvitch-etc-dir)
@@ -13,7 +20,7 @@
 (setq custom-file (concat vvitch-etc-dir "custom.el"))
 
 ;; set early so we pull pkgs without getting asked to pick an encoding
-(set-default-coding-systems 'utf-8)
+(prefer-coding-system 'utf-8)
 
 (require 'package)
 (setq package-enable-at-startup nil
@@ -32,6 +39,7 @@
 (eval-when-compile
   (require 'use-package))
 
+(load-file (concat vvitch-root-dir "cosmetics.el"))
 (setq-default bidi-display-reordering nil)
 
 (use-package no-littering
@@ -43,7 +51,7 @@
     (setq no-littering-etc-directory vvitch-etc-dir)
     (setq no-littering-var-directory vvitch-var-dir)
     (setq auto-save-file-name-transforms
-      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
     (add-to-list 'recentf-exclude no-littering-var-directory)
     (add-to-list 'recentf-exclude no-littering-etc-directory)))
 
@@ -51,11 +59,11 @@
   :ensure t
   :init
   (setq evil-search-module 'evil-search
-	evil-ex-complete-emacs-commands nil
-	evil-vsplit-window-right t
-	evil-split-window-below t
-	evil-shift-round nil
-	evil-want-C-u-scroll t)
+        evil-ex-complete-emacs-commands nil
+        evil-vsplit-window-right t
+        evil-split-window-below t
+        evil-shift-round nil
+        evil-want-C-u-scroll t)
   :config
   (evil-mode))
 
@@ -111,11 +119,12 @@
   (which-key-setup-side-window-bottom)
   (setq which-key-sort-order 'which-key-prefix-then-key-order)
   (setq which-key-popup-type 'side-window
-	which-key-side-window-max-height 0.5
-	which-key-side-window-max-width 0.33
-	which-key-idle-delay 0.5
-	which-key-min-display-lines 7))
+        which-key-side-window-max-height 0.5
+        which-key-side-window-max-width 0.33
+        which-key-idle-delay 0.5
+        which-key-min-display-lines 7))
 
 (load-file (concat vvitch-root-dir "quill.el"))
-(load-file (concat vvitch-root-dir "cosmetics.el"))
 (load-file (concat vvitch-root-dir "broom.el"))
+
+(provide 'vvitch-boot)
