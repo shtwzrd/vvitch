@@ -1,15 +1,19 @@
-(setq locale-coding-system 'utf-8
-      coding-system-for-read 'utf-8
-      coding-system-for-write 'utf-8)
+                                        ;(setq locale-coding-system 'utf-8
+                                        ;      coding-system-for-read 'utf-8
+                                        ;      coding-system-for-write 'utf-8)
 
-(setq-default buffer-file-coding-system 'utf-8)
-(set-charset-priority 'unicode)
-(prefer-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
+                                        ;(setq-default buffer-file-coding-system 'utf-8)
+                                        ;(set-charset-priority 'unicode)
+                                        ;(prefer-coding-system 'utf-8)
+                                        ;(set-terminal-coding-system 'utf-8)
+                                        ;(set-keyboard-coding-system 'utf-8)
+                                        ;(set-selection-coding-system 'utf-8)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(add-hook 'lisp-mode 'paredit-mode)
+(add-hook 'clojure-mode 'paredit-mode)
+(add-hook 'emacs-lisp-mode 'paredit-mode)
 
 (setq save-interprogram-paste-before-kill t
       ring-bell-function 'ignore
@@ -34,4 +38,23 @@
   :config
   (editorconfig-mode 1))
 
+(use-package company
+  :hook (prog-mode . company-mode))
+
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode 1)
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+  (use-package flycheck-pos-tip
+    :ensure t
+    :config
+    (eval-after-load 'flycheck
+      '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
+
+(use-package aggressive-indent
+  :hook ((clojure-mode . aggressive-indent-mode)
+         (emacs-lisp-mode . aggressive-indent-mode)))
+
 (provide 'vvitch-quill)
+

@@ -14,6 +14,11 @@
 (column-number-mode)
 (save-place-mode)
 
+(setq window-divider-default-bottom-width 1)
+(setq window-divider-default-right-width 1)
+(setq window-divider-default-places t)
+(window-divider-mode)
+
 (setq initial-major-mode 'fundamental-mode
       inhibit-startup-message t
       inhibit-startup-echo-area-message user-login-name
@@ -39,10 +44,18 @@
               jit-lock-stealth-time 0.2
               jit-lock-stealth-verbose nil)
 
-(use-package nord-theme
+;(use-package nord-theme
+; :ensure t
+; :config
+; (setq nord-comment-brightness 10))
+
+(use-package dracula-theme
+  :ensure t
+  :config (load-theme 'dracula t))
+
+(use-package rainbow-delimiters
   :ensure t
   :config
-  (setq nord-comment-brightness 10)
-  (load-theme 'nord t))
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (provide 'vvitch-cosmetics)

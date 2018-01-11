@@ -2,13 +2,15 @@
 (defvar vvitch-pkg-dir (concat user-emacs-directory "packages/"))
 (defvar vvitch-etc-dir (concat user-emacs-directory "etc/"))
 (defvar vvitch-var-dir (concat user-emacs-directory "var/"))
+(defvar vvitch-leader "SPC")
+(defvar vvitch-local-leader ",")
 
 (defvar normal-gc-cons-threshold (* 20 1024 1024))
 (defvar init-gc-cons-threshold   (* 512 1024 1024))
 
 (setq gc-cons-threshold init-gc-cons-threshold)
 (add-hook 'after-init-hook
-  (lambda () (setq gc-cons-threshold normal-gc-cons-threshold)))
+          (lambda () (setq gc-cons-threshold normal-gc-cons-threshold)))
 
 (unless (file-exists-p vvitch-pkg-dir)
   (make-directory vvitch-pkg-dir))
@@ -20,7 +22,7 @@
 (setq custom-file (concat vvitch-etc-dir "custom.el"))
 
 ;; set early so we pull pkgs without getting asked to pick an encoding
-(prefer-coding-system 'utf-8)
+                                        ;(prefer-coding-system 'utf-8)
 
 (require 'package)
 (setq package-enable-at-startup nil
@@ -72,7 +74,7 @@
   :config
   (general-define-key
    :states '(normal visual insert emacs)
-   :prefix "SPC"
+   :prefix vvitch-leader
    :non-normal-prefix "C-SPC"
 
    ;; Top level
@@ -126,5 +128,12 @@
 
 (load-file (concat vvitch-root-dir "quill.el"))
 (load-file (concat vvitch-root-dir "broom.el"))
+
+(defun load-directory (dir)
+  (let ((load-it (lambda (f)
+                   (load-file (concat (file-name-as-directory dir) f)))))
+    (mapc load-it (directory-files dir nil "\\.el$"))))
+
+(load-directory (concat vvitch-root-dir "tomes"))
 
 (provide 'vvitch-boot)
